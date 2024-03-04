@@ -7,17 +7,12 @@ trigger:
   - none
 
 variables:
-  # Azure Resource Manager connection created during pipeline creation
-  azureSubscription: "scdanskmetal"
-
-  # Function app name
-  functionAppName: "danskmetalfirstfunctionapp"
-
+  directory: "/DanskMetal.FirstFunctionApp/DanskMetal.FirstFunctionApp"
   # Agent VM image name
   vmImageName: "windows-latest"
 
   # Working Directory
-  workingDirectory: "$(System.DefaultWorkingDirectory)/DanskMetal.FirstFunctionApp/DanskMetal.FirstFunctionApp"
+  workingDirectory: "$(System.DefaultWorkingDirectory)$(directory)"
 
 stages:
   - stage: Build
@@ -70,7 +65,7 @@ stages:
                 - task: AzureFunctionApp@1
                   displayName: "Azure functions app deploy"
                   inputs:
-                    azureSubscription: "$(azureSubscription)"
+                    azureSubscription: $(sc.connection)
                     appType: functionApp
                     appName: $(functionAppName)
                     package: "$(Pipeline.Workspace)/drop/$(Build.BuildId).zip"
