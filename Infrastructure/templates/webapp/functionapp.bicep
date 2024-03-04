@@ -13,7 +13,6 @@ param storageAccountConnectionStringName string
 
 //Runtime
 param postFix string = 'dada'
-param alwaysOn bool = true
 
 var version = '~4'
 var runtime  = 'dotnet-isolated'
@@ -30,7 +29,6 @@ resource functionApp 'Microsoft.Web/sites@2021-02-01' = {
   properties: {
     serverFarmId: farmId
     siteConfig: {
-      alwaysOn: alwaysOn
       appSettings: [
         {
           name: 'AzureWebJobsStorage'
