@@ -30,6 +30,7 @@ stages:
           vmImage: $(vmImageName)
 
         steps:
+          - script: tree
           - task: DotNetCoreCLI@2
             displayName: Build
             inputs:
