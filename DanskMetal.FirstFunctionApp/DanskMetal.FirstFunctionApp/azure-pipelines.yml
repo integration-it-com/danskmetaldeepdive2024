@@ -17,7 +17,7 @@ variables:
   vmImageName: "windows-latest"
 
   # Working Directory
-  workingDirectory: "$(System.DefaultWorkingDirectory)/deep_dive_first_function_app"
+  workingDirectory: "$(System.DefaultWorkingDirectory)/DanskMetal.FirstFunctionApp"
 
 stages:
   - stage: Build
