@@ -9,7 +9,7 @@ param farmId string
 
 //Specific for integration platform
 param baseStorageAccountName string
-param baseStorageAccountConnectionString string
+param storageAccountConnectionStringName string
 
 //Runtime
 param postFix string = 'dada'
@@ -61,11 +61,11 @@ resource functionApp 'Microsoft.Web/sites@2021-02-01' = {
           value: '1'
         }
         {
-          name: '${baseStorageAccountConnectionString}__blobServiceUri'
+          name: '${storageAccountConnectionStringName}__blobServiceUri'
           value: 'https://${baseStorageAccountName}.blob.core.windows.net'
         }
         {
-          name: '${baseStorageAccountConnectionString}__queueServiceUri'
+          name: '${storageAccountConnectionStringName}__queueServiceUri'
           value: 'https://${baseStorageAccountName}.queue.core.windows.net'
         }
        

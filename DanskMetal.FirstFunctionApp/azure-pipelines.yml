@@ -7,15 +7,19 @@ trigger:
   - none
 
 variables:
-  directory: "/DanskMetal.FirstFunctionApp/DanskMetal.FirstFunctionApp"
-  # Agent VM image name
-  vmImageName: "windows-latest"
-
-  # Working Directory
-  workingDirectory: "$(System.DefaultWorkingDirectory)$(directory)"
+  - group: Common
+  - name: directory
+    value: "/DanskMetal.FirstFunctionApp/DanskMetal.FirstFunctionApp"
+  - name: vmImageName
+    value: "windows-latest"
+  - name: environment
+    value: "test"
 
 stages:
   - stage: Build
+    variables:
+      - name: workingDirectory
+        value: "$(System.DefaultWorkingDirectory)$(directory)"
     displayName: Build stage
 
     jobs:
@@ -47,14 +51,16 @@ stages:
             artifact: drop
 
   - stage: Deploy
-    displayName: Deploy stage
+    variables:
+      - group: Common
+    displayName: Deploy Function app code
     dependsOn: Build
     condition: succeeded()
 
     jobs:
       - deployment: Deploy
         displayName: Deploy
-        environment: "development"
+        environment: $(environment)
         pool:
           vmImage: $(vmImageName)
 
@@ -67,5 +73,5 @@ stages:
                   inputs:
                     azureSubscription: $(sc.connection)
                     appType: functionApp
-                    appName: $(functionAppName)
+                    appName: "$(appName)-$(environment)-func"
                     package: "$(Pipeline.Workspace)/drop/$(Build.BuildId).zip"

@@ -3,6 +3,7 @@ targetScope = 'resourceGroup'
 param appName string
 param location string = resourceGroup().location
 param env string
+param storageAccountConnectionStringName string
 
 
 //Monitor
@@ -38,11 +39,11 @@ module storageAccount 'storageAccount/storageAccount.bicep' = {
 }
 
 //Storage Account Container: input
-var inputContainerName = 'input'
+var uploadContainerName = 'upload'
 module container_msgbox 'storageAccount/container.bicep' = {
-  name: 'container_msgbox'
+  name: 'container_upload'
   params: {
-    containerName: inputContainerName
+    containerName: uploadContainerName
     storageAccountName: storageAccount.outputs.name
   }
 }
@@ -51,7 +52,7 @@ module container_msgbox 'storageAccount/container.bicep' = {
 //Storage Account Container: output
 var outputContainerName = 'output'
 module container_archive 'storageAccount/container.bicep' = {
-  name: 'container_archive'
+  name: 'container_output'
   params: {
     containerName: outputContainerName
     storageAccountName: storageAccount.outputs.name
@@ -61,7 +62,7 @@ module container_archive 'storageAccount/container.bicep' = {
 //Storage Account Container: config
 var configContainerName = 'config'
 module container_schemas 'storageAccount/container.bicep' = {
-  name: 'container_schemas'
+  name: 'container_config'
   params: {
     containerName: configContainerName
     storageAccountName: storageAccount.outputs.name
@@ -101,19 +102,19 @@ module functionApp 'webapp/functionapp.bicep' = {
     location: location
     storageAccountConnectionString: functionAppStorageAccount.outputs.connectionString
     baseStorageAccountName: storageAccount.outputs.name
-    baseStorageAccountConnectionString: storageAccount.outputs.connectionString
+    storageAccountConnectionStringName: storageAccountConnectionStringName
   }
 }
 
 
 
-//Give MI Role Assignments on Resource Group Level
+//Give MI Role Assignments to the Function App
 
 //Storage Blob Data Owner
 //b7e6dc6d-f1e8-4753-8033-0f276bb0955b
 module role_blobowner 'rbac/roleAssignment.bicep' = {
   dependsOn:[
-    identity
+    functionApp
   ]
   name: 'functionAppBlobDataRA'
   params: {
@@ -127,7 +128,7 @@ module role_blobowner 'rbac/roleAssignment.bicep' = {
 //974c5e8b-45b9-4653-ba55-5f855dd0fb88
 module role_storagequeuecon 'rbac/roleAssignment.bicep' = {
   dependsOn:[
-    identity
+    functionApp
   ]
   name: 'functionAppQueueContRA'
   params: {

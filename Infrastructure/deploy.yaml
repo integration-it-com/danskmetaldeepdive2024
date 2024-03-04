@@ -2,7 +2,7 @@ parameters:
   - name: EnvironmentPostFix
     type: string
     default: development
-  - name: ServiceConnection # This is needed as a parameter. Cannot reference from variable group
+  - name: ServiceConnection
     type: string
   - name: Location
     type: string
@@ -28,7 +28,8 @@ stages:
                     connectedServiceName: ${{ parameters.ServiceConnection }}
                     location: ${{ parameters.Location }}
                     resourceGroupName: ${{ variables.resourceGroup }}
-                    csmFile: "$(Pipeline.Workspace)/templates/common/infrastructure.bicep"
+                    csmFile: "$(Pipeline.Workspace)/templates/infrastructure.bicep"
                     overrideParameters: >
                       -appName ${{ parameters.AppName }}
                       -env ${{ parameters.EnvironmentPostFix}}
+                      -storageAccountConnectionStringName $(storageAccountConnectionStringName)
