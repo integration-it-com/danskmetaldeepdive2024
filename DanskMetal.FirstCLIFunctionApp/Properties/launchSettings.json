@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "DanskMetal_FirstCLIFunctionApp": {
+      "commandName": "Project",
+      "commandLineArgs": "--port 7182",
+      "launchBrowser": false
+    }
+  }
+}
