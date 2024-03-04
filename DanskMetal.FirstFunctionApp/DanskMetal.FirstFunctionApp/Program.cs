@@ -6,15 +6,15 @@ internal class Program
 {
     private static void Main(string[] args)
     {
+
         var host = new HostBuilder()
-            .ConfigureFunctionsWebApplication()
-            .ConfigureServices(services =>
+            .ConfigureFunctionsWorkerDefaults()
+            .ConfigureServices(s =>
             {
-                services.AddApplicationInsightsTelemetryWorkerService();
-                services.ConfigureFunctionsApplicationInsights();
             })
             .Build();
 
-            host.Run();
+        host.Run();
+
     }
 }
