@@ -13,7 +13,7 @@ namespace DanskMetal.FirstFunctionApp
             _logger = loggerFactory.CreateLogger<DanskMetalFirstTimerTriggerFunction>();
         }
 
-        [Function("DanskMetalFirstTimerTriggerFunction")]
+        //[Function("DanskMetalFirstTimerTriggerFunction")]
         public void Run([TimerTrigger("*/10 * * * * *")] TimerInfo myTimer)
         {
             _logger.LogInformation($"Dansk Metal Timer Trigger executed at: {DateTime.Now}");
