@@ -16,7 +16,7 @@ namespace DanskMetal.FirstFunctionApp
             _blobHandler = blobHandler;
         }
 
-
+        // Remember to upload the config.txt file to the config container in the storage account
         [Function("DanskMetalBlobTriggerFunction")]
         public async Task Run(
             [BlobTrigger("upload/{name}", Connection = "DanskMetalConnectionString")] string input,
