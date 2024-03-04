@@ -17,7 +17,7 @@ variables:
   vmImageName: "windows-latest"
 
   # Working Directory
-  workingDirectory: "$(System.DefaultWorkingDirectory)/DanskMetal.FirstFunctionApp'"
+  workingDirectory: "$(System.DefaultWorkingDirectory)/DanskMetal.FirstFunctionApp/DanskMetal.FirstFunctionApp"
 
 stages:
   - stage: Build
@@ -30,7 +30,7 @@ stages:
           vmImage: $(vmImageName)
 
         steps:
-          - script: tree
+          - script: echo $(workingDirectory)
           - task: DotNetCoreCLI@2
             displayName: Build
             inputs:
