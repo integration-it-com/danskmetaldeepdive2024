@@ -16,17 +16,6 @@ module monitor 'monitor/monitor.bicep' = {
   }
 }
 
-//User Managed Identity
-module identity 'identities/userManagedIdentity.bicep' = {
-  name: 'identity'
-  params: {
-    appName: appName
-    env: env
-    location: location
-  }
-}
-
-
 
 //Storage Account
 module storageAccount 'storageAccount/storageAccount.bicep' = {
