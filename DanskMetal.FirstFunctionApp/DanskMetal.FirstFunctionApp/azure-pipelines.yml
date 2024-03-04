@@ -17,7 +17,7 @@ variables:
   vmImageName: "windows-latest"
 
   # Working Directory
-  workingDirectory: "$(System.DefaultWorkingDirectory)/DanskMetal.FirstFunctionApp"
+  workingDirectory: "$(System.DefaultWorkingDirectory)/**/DanskMetal.FirstFunctionApp"
 
 stages:
   - stage: Build
