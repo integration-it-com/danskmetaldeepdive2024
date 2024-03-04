@@ -4,8 +4,8 @@
     "AzureWebJobsStorage": "UseDevelopmentStorage=true",
     "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated",
     //"DanskMetalConnectionString": "DefaultEndpointsProtocol=https;AccountName=blobcontainerst;AccountKey=REW07YXWPdquLIDKT02jBMyizv1fYKt1L6vq84I5HJpo3L55rJfLwfXaF99yVJDfI1ZcnRufbJJd+ASt6WXEEA==;EndpointSuffix=core.windows.net",
-    "DanskMetalConnectionString__blobServiceUri": "https://blobcontainerst.blob.core.windows.net",
-    "DanskMetalConnectionString__queueServiceUri": "https://blobcontainerst.queue.core.windows.net",
+    "DanskMetalConnectionString__blobServiceUri": "https://dmetalfuncapptestst.blob.core.windows.net",
+    "DanskMetalConnectionString__queueServiceUri": "https://dmetalfuncapptestst.queue.core.windows.net",
     "RunningLocally": true
 
   }
