@@ -11,7 +11,7 @@ variables:
   - name: directory
     value: "/DanskMetal.FirstFunctionApp/DanskMetal.FirstFunctionApp"
   - name: vmImageName
-    value: "windows-latest"
+    value: "ubuntu-latest"
   - name: environment
     value: "test"
 

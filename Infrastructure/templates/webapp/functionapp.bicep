@@ -7,7 +7,6 @@ param storageAccountConnectionString string
 param instrumentationKey string
 param farmId string
 
-//Specific for integration platform
 param baseStorageAccountName string
 param storageAccountConnectionStringName string
 
