@@ -9,35 +9,29 @@ namespace DanskMetal_DurableFunctionApp
     public static class DurableFunction
     {
         [Function(nameof(DurableFunction))]
-        public static async Task<List<string>> RunOrchestrator(
-            [OrchestrationTrigger] TaskOrchestrationContext context)
+        public static async Task RunOrchestrator(
+           [OrchestrationTrigger] TaskOrchestrationContext context)
         {
             ILogger logger = context.CreateReplaySafeLogger(nameof(DurableFunction));
             logger.LogInformation("Saying hello.");
-            var outputs = new List<string>();
+            using var timeoutCts = new CancellationTokenSource();
+            DateTime dueTime = context.CurrentUtcDateTime.AddSeconds(10);
+            logger.LogInformation("Should timeout at:{Time}", dueTime);
+            Task durableTimeout = context.CreateTimer(dueTime, timeoutCts.Token);
+            Task<bool> approvalEvent = context.WaitForExternalEvent<bool>("ApprovalEvent");
+            if (approvalEvent == await Task.WhenAny(approvalEvent, durableTimeout))
+            {
+                timeoutCts.Cancel();
+                System.Console.WriteLine($"Back from approver: {approvalEvent.Result}");
+            }
+            else
+            {
+                System.Console.WriteLine("Timeout");
+                context.SetCustomStatus("Failed!!!!");
+            }
 
-            // Replace name and input with values relevant for your Durable Functions Activity
-            outputs.Add(await context.CallActivityAsync<string>(nameof(SayHello), "Tokyo"));
-            outputs.Add(await context.CallActivityAsync<string>(nameof(SayHello), "Seattle"));
-            outputs.Add(await context.CallActivityAsync<string>(nameof(SayHello), "London"));
-
-            // returns ["Hello Tokyo!", "Hello Seattle!", "Hello London!"]
-            return outputs;
         }
 
-        [Function(nameof(SayHello))]
-        public static async Task<string> SayHello([ActivityTrigger] string name, FunctionContext executionContext)
-        {
-            
-            ILogger logger = executionContext.GetLogger("SayHello");
-            logger.LogInformation("Start the called to {name}", name);
-            await Task.Delay(30000);
-
-            logger.LogInformation("Saying hello to {name}.", name);
-
-
-            return $"Hello {name}!";
-        }
 
         [Function("DurableFunction_HttpStart")]
         public static async Task<HttpResponseData> HttpStart(
@@ -57,5 +51,7 @@ namespace DanskMetal_DurableFunctionApp
             // See https://learn.microsoft.com/azure/azure-functions/durable/durable-functions-http-api#start-orchestration
             return client.CreateCheckStatusResponse(req, instanceId);
         }
+
+     
     }
 }
