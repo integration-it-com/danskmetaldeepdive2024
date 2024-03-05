@@ -22,6 +22,7 @@ namespace DanskMetal.FirstFunctionApp
             {
                 _logger.LogInformation($"Next timer schedule at: {myTimer.ScheduleStatus.Next}");
             }
+
         }
     }
 }
