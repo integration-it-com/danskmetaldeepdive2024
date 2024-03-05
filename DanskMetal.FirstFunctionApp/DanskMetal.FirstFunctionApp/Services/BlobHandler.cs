@@ -18,7 +18,7 @@ namespace deep_dive_first_function_app.Services
         public async Task SaveBlobAsync(string contents, string blobName)
         {
             // Change URL here. Bad coding :)
-            var uri = new Uri($"https://danskmfuncapp.blob.core.windows.net/output/{blobName}");
+            var uri = new Uri($"https://danskmfuncapptestst.blob.core.windows.net/output/{blobName}");
             var credentials = GetCredential();
             var client = new BlobClient(blobUri: uri, credential: credentials);
             var blobStream = new MemoryStream(Encoding.UTF8.GetBytes(contents));
