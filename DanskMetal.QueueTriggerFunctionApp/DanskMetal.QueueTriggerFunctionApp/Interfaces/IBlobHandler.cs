@@ -2,6 +2,9 @@
 {
     public interface IBlobHandler
     {
-        Task SaveBlobAsync(string contents, string blobName);
+        Task SaveBlobAsync(string contents, string blobName, string storageAccountName = "blobcontainerst");
+        Task<string> GetBlobAsync(string blobName, string storageAccountName = "blobcontainerst", string containerName = "upload");
+
+
     }
 }

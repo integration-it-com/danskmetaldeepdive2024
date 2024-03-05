@@ -2,6 +2,7 @@ using System;
 using System.Reflection.Metadata;
 using System.Text.Json;
 using Azure.Storage.Queues.Models;
+using deep_dive_first_function_app.Interfaces;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 
@@ -10,24 +11,26 @@ namespace DanskMetal.QueueTriggerFunctionApp
     public class DanskMetalQueueTrigger
     {
         private readonly ILogger<DanskMetalQueueTrigger> _logger;
+        private readonly IBlobHandler _blobHandler;
 
-        public DanskMetalQueueTrigger(ILogger<DanskMetalQueueTrigger> logger)
+        public DanskMetalQueueTrigger(ILogger<DanskMetalQueueTrigger> logger, IBlobHandler blobHandler)
         {
             _logger = logger;
+            _blobHandler = blobHandler;
         }
 
         [Function(nameof(DanskMetalQueueTrigger))]
-        public void Run([QueueTrigger("triggerqueue", Connection = "BlobContainerConnectionString")] QueueMessage message)
+        public async Task Run([QueueTrigger("triggerqueue", Connection = "BlobContainerConnectionString")] QueueMessage message)
         {
 
             _logger.LogInformation("C# Queue trigger function Processed processed message in queue");
             var newFileMetaData = JsonSerializer.Deserialize<AzureFunctionAppConfiguration>(message.Body);
 
-            
-            //string output = Reverse(input);
-            //_logger.LogInformation("The reversed output was {Output}", output);
-            //string outputBlobName = DateTime.Now.ToString("yyyyMMdd-HHmmss") + ".txt";
-            //await _blobHandler.SaveBlobAsync(output, outputBlobName);
+            var contents = await _blobHandler.GetBlobAsync(newFileMetaData.File);
+            string output = Reverse(contents);
+            _logger.LogInformation("The reversed output was {Output}", output);
+            string outputBlobName = DateTime.Now.ToString("yyyyMMdd-HHmmss") + ".txt";
+            await _blobHandler.SaveBlobAsync(output, outputBlobName);
 
 
         }

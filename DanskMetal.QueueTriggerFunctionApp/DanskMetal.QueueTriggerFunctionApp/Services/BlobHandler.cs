@@ -3,6 +3,7 @@ using Azure.Identity;
 using Azure.Storage.Blobs;
 using deep_dive_first_function_app.Interfaces;
 using Microsoft.Extensions.Logging;
+using System.IO;
 using System.Text;
 
 namespace deep_dive_first_function_app.Services
@@ -15,10 +16,26 @@ namespace deep_dive_first_function_app.Services
         {
             _logger = logger;
         }
-        public async Task SaveBlobAsync(string contents, string blobName)
+
+        public async Task<string> GetBlobAsync(string blobName, string storageAccountName = "blobcontainerst", string containerName = "upload")
         {
-            // Change URL here. Bad coding :)
-            var uri = new Uri($"https://danskmfuncapptestst.blob.core.windows.net/output/{blobName}");
+            var credential = GetCredential();
+            Uri blobUri = new($"https://{storageAccountName}.blob.core.windows.net/{containerName}/{blobName}");
+            var client = new BlobClient(
+                        blobUri: blobUri,
+                        credential: credential);
+            var blobStream = await client.OpenReadAsync();
+
+            StreamReader streamReader = new StreamReader(blobStream, Encoding.UTF8);
+
+            string blob = await streamReader.ReadToEndAsync();
+            return blob;
+        }
+
+        public async Task SaveBlobAsync(string contents, string blobName, string storageAccountName = "blobcontainerst")
+        {
+            // Change URL here. Better coding :)
+            var uri = new Uri($"https://{storageAccountName}.blob.core.windows.net/output/{blobName}");
             var credentials = GetCredential();
             var client = new BlobClient(blobUri: uri, credential: credentials);
             var blobStream = new MemoryStream(Encoding.UTF8.GetBytes(contents));
