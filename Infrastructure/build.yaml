@@ -42,3 +42,10 @@ stages:
       ServiceConnection: $(sc.connection)
       Location: $(location)
       AppName: $(appName)
+
+  - template: deploy.yaml
+    parameters:
+      EnvironmentPostFix: prod
+      ServiceConnection: $(sc.connection)
+      Location: $(location)
+      AppName: $(appName)
