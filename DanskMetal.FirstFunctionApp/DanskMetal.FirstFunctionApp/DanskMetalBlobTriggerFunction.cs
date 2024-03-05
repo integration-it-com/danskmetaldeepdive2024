@@ -23,6 +23,8 @@ namespace DanskMetal.FirstFunctionApp
             [BlobInput("config/config.txt", Connection = "DanskMetalConnectionString")] Stream configStream,
             string name)
         {
+
+
             _logger.LogInformation("C# Blob trigger function Processed blob\n Name: {Name} \n Data: {Input}", name, input);
             var config = JsonSerializer.Deserialize<AzureFunctionAppConfiguration>(configStream);
 
