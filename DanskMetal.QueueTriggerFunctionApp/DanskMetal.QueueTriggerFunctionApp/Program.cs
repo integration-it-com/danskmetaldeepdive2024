@@ -1,13 +1,11 @@
-using Microsoft.Azure.Functions.Worker;
-using Microsoft.Extensions.DependencyInjection;
+using deep_dive_first_function_app.DI;
 using Microsoft.Extensions.Hosting;
 
 var host = new HostBuilder()
-    .ConfigureFunctionsWebApplication()
-    .ConfigureServices(services =>
+    .ConfigureFunctionsWorkerDefaults()
+    .ConfigureServices(s =>
     {
-        services.AddApplicationInsightsTelemetryWorkerService();
-        services.ConfigureFunctionsApplicationInsights();
+        s.AddFunctionAppServices();
     })
     .Build();
 
