@@ -22,7 +22,7 @@ namespace DanskMetal.FirstFunctionApp
             var response = req.CreateResponse(HttpStatusCode.OK);
             response.Headers.Add("Content-Type", "text/plain; charset=utf-8");
 
-            response.WriteString("Welcome to Dansk Metal Azure Functions!.");
+            response.WriteString("Welcome to Dansk Metal Azure Functions!. I changed the output");
 
             return response;
         }
