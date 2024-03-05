@@ -62,9 +62,25 @@ Function App is the main instance which contains individual Functions. Each Func
 In-Process to Isolated migration:
 [Migration guide](https://learn.microsoft.com/en-us/azure/azure-functions/migrate-dotnet-to-isolated-model?tabs=net8)
 
+### Creation
+
+Use either the Portal, Visual Studio, Visual Studio Code, Core Tools (Function App) CLI or something else to create a Function App
+
+Core Tools CLI command:
+
+`func init`
+
+Add a new Function to the newly created Function App by any means.
+
+Core Tools CLI command:
+
+`func new`
+
 ### Triggers / Bindings
 
-Triggers are used to run a Function. Must have 1. Bindings can be input or output and are used to connect to other resources. Are provided as parameters in the Function.
+Triggers are used to run a Function. Must have 1.
+
+Bindings can be input or output and are used to connect to other resources. Are provided as parameters in the Function.
 
 [Triggers and Bindings](https://learn.microsoft.com/en-us/azure/azure-functions/functions-triggers-bindings)
 
@@ -85,15 +101,19 @@ IP restrictions are available under Networking.
 1. Create a Function App and Function in the Portal (.net 6 / inprocess )
 2. Create a Function App and Function locally using Core Tools
 3. Create a Function App and Function locally using an IDE
-4. Publish a Function App to Azure (If using VS, enable SCM basic )
+4. Publish a Function App to Azure (If using VS publish, enable SCM basic )
 
 ## Deployment
 
 Use `func azure functionapp publish <FUNCTION_APP_NAME>` powershell command to publish.
 
-Setup Azure DevOps pipelines.
+Setup Azure DevOps pipelines. This requires access to Azure DevOps. 
 
 ## Managed Identity
+
+To use MI locally, log in to the correct Azure account with:
+
+`az login --use-device-code`
 
 Enable System Managed Identity under Identity.
 
@@ -104,11 +124,17 @@ Needs a different type of "Connection String". For Blobs use:
 | BlobStorageConnectionString\_\_blobServiceUri  | https://functionappst.blob.core.windows.net  |
 | BlobStorageConnectionString\_\_queueServiceUri | https://functionappst.queue.core.windows.net |
 
-Blob Trigger required roles
+Example: Blob Trigger required roles
 
 - Trigger: Storage Blob Data Owner and Storage Queue Data Contributor
 - Input binding: Storage Blob Data Reader
 - Output binding: Storage Blob Data Owner
+
+[Blob Trigger](https://learn.microsoft.com/en-us/azure/azure-functions/functions-bindings-storage-blob-trigger)
+
+**WARNING: DO NOT USE BLOB TRIGGER IN PRODUCTION. IT IS NOT RELIABLE FOR PRODUCTION.**
+
+See warning in above link.
 
 ### Exercisees
 
