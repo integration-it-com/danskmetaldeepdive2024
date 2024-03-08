@@ -98,6 +98,8 @@ IP restrictions are available under Networking.
 
 ### Exercises
 
+[How to create a function app - YouTube guide](https://www.youtube.com/watch?v=BEIZKCDElMs)
+
 1. Create a Function App and Function in the Portal (.net 6 / inprocess )
 2. Create a Function App and Function locally using Core Tools
 3. Create a Function App and Function locally using an IDE
@@ -107,7 +109,7 @@ IP restrictions are available under Networking.
 
 Use `func azure functionapp publish <FUNCTION_APP_NAME>` powershell command to publish.
 
-Setup Azure DevOps pipelines. This requires access to Azure DevOps. 
+Setup Azure DevOps pipelines. This requires access to Azure DevOps.
 
 ## Managed Identity
 
